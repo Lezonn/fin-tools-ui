@@ -1,5 +1,3 @@
-import status from 'statuses'
-
 const DEFAULT = {
   headers: {
     'Content-Type': 'application/json'

@@ -1,17 +1,21 @@
 <script setup>
 import config from '@/config'
+import { googleAuthCodeLogin } from 'vue3-google-login'
+import { getDataViaApi } from '@/utils/http-api'
 
-const CLIENT_URL = 'localhost'
+const login = () => {
+  googleAuthCodeLogin().then((response) => {
+    console.log('Handle the response', response)
 
-function handleGoogleLogin() {
-  const popup = window.open(config.api.oauthGoogle.login, 'mywindow', 'width=500,height=500')
-  const checkPopup = setInterval(() => {
-    if (popup.window.location.href.includes(CLIENT_URL)) {
-      popup.close()
-    }
-    if (!popup || !popup.closed) return
-    clearInterval(checkPopup)
-  }, 1000)
+    getDataViaApi({
+      url: config.api.oauthGoogle.callback,
+      queryParams: {
+        code: response.code
+      }
+    }).then((res) => {
+      console.log(res)
+    })
+  })
 }
 </script>
 
@@ -59,17 +63,7 @@ function handleGoogleLogin() {
           </form>
 
           <div class="row">
-            <div class="btn white darken-6 col s12">
-              <div class="left">
-                <img
-                  src="@/assets/Google_Icons-09-512.webp"
-                  alt="Google Logo"
-                  width="32"
-                  height="32"
-                />
-              </div>
-              <a @click="handleGoogleLogin" style="text-transform: none"> Login with Google </a>
-            </div>
+            <button @click="login">Login Using Google</button>
           </div>
         </div>
       </div>
