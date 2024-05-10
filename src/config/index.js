@@ -23,7 +23,7 @@ const pages = {
 
 const api = {
   oauthGoogle: {
-    login: `${FIN_TOOLS_API}/auth/google/login`
+    callback: `${FIN_TOOLS_API}/auth/google/callback`
   }
 }
 
