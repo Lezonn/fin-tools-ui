@@ -12,14 +12,12 @@ function _getHeaders(headers) {
 }
 
 export function defaultHandlerConnectionError(err) {
-  // check if status code is 401, redirect to login
   switch (err.status) {
     case 401: {
       window.location.href = '/login'
       break
     }
     default:
-    // nothing
   }
 }
 
@@ -77,7 +75,7 @@ export function buildUrl({ url, queryParams }) {
   return urlObj
 }
 
-export function getDataViaApi({ url, queryParams, headers }) {
+export function get({ url, queryParams, headers }) {
   const urlObj = buildUrl({
     url,
     queryParams
@@ -93,7 +91,7 @@ export function getDataViaApi({ url, queryParams, headers }) {
     })
 }
 
-export function postDataViaApi({ url, queryParams, headers, body }) {
+export function post({ url, queryParams, headers, body }) {
   const urlObj = buildUrl({
     url,
     queryParams
@@ -110,7 +108,7 @@ export function postDataViaApi({ url, queryParams, headers, body }) {
     })
 }
 
-export function putDataViaApi({ url, queryParams, headers, body }) {
+export function put({ url, queryParams, headers, body }) {
   const urlObj = buildUrl({
     url,
     queryParams
@@ -127,53 +125,13 @@ export function putDataViaApi({ url, queryParams, headers, body }) {
     })
 }
 
-export function deleteDataViaApi({ url, queryParams, headers }) {
+export function del({ url, queryParams, headers }) {
   const urlObj = buildUrl({
     url,
     queryParams
   })
   return fetch(urlObj, {
     method: 'DELETE',
-    headers: _getHeaders(headers)
-  })
-    .then(_responseAdapter)
-    .catch((err) => {
-      defaultHandlerConnectionError(err)
-      throw err
-    })
-}
-
-export function postDataViaApiFormData({ url, body }) {
-  const urlObj = buildUrl({ url })
-  return fetch(urlObj, {
-    method: 'POST',
-    body
-  })
-    .then(_responseAdapter)
-    .catch((err) => {
-      defaultHandlerConnectionError(err)
-      throw err
-    })
-}
-
-export function deleteDataViaApiFormData({ url, body }) {
-  const urlObj = buildUrl({ url })
-  return fetch(urlObj, {
-    method: 'DELETE',
-    body
-  })
-    .then(_responseAdapter)
-    .catch((err) => {
-      defaultHandlerConnectionError(err)
-      throw err
-    })
-}
-
-export function deleteDataViaApiWithBody({ url, body, headers }) {
-  const urlObj = buildUrl({ url })
-  return fetch(urlObj, {
-    method: 'DELETE',
-    body: JSON.stringify(body),
     headers: _getHeaders(headers)
   })
     .then(_responseAdapter)
@@ -192,11 +150,8 @@ function getHttpStatusTextFromCode(code) {
 }
 
 export default {
-  getDataViaApi,
-  postDataViaApi,
-  postDataViaApiFormData,
-  deleteDataViaApiFormData,
-  putDataViaApi,
-  deleteDataViaApi,
-  deleteDataViaApiWithBody
+  get,
+  post,
+  put,
+  del
 }

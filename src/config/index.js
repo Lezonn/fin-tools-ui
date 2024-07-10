@@ -27,4 +27,4 @@ const api = {
   }
 }
 
-export default { pages, api }
+export { pages, api }
