@@ -1,12 +1,12 @@
 <script setup>
-import config from '@/config'
 import { googleAuthCodeLogin } from 'vue3-google-login'
-import { getDataViaApi } from '@/utils/http-api'
+import { api } from '@/config'
+import { get } from '@/utils/http-api'
 
 const login = () => {
   googleAuthCodeLogin().then((response) => {
-    getDataViaApi({
-      url: config.api.oauthGoogle.callback,
+    get({
+      url: api.oauthGoogle.callback,
       queryParams: {
         code: response.code
       }
