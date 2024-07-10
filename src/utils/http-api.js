@@ -82,8 +82,7 @@ export function get({ url, queryParams, headers }) {
   })
   return fetch(urlObj, {
     method: 'GET',
-    headers: _getHeaders(headers),
-    credentials: 'include'
+    headers: _getHeaders(headers)
   })
     .then(_responseAdapter)
     .catch((err) => {
