@@ -1,57 +1,97 @@
 import axios from 'axios'
 
-export function get({ url, queryParams, headers }) {
-  return axios
-    .get(url, {
+export async function get({ url, queryParams, headers }) {
+  try {
+    const response = await axios.get(url, {
       headers: getHeaders(headers),
       params: queryParams
     })
-    .then(responseAdapter)
-    .catch((err) => {
-      defaultHandlerConnectionError(err)
-      throw err
-    })
+
+    return responseAdapter(response)
+  } catch (err) {
+    defaultHandlerConnectionError(err)
+    throw err
+  }
 }
 
-export function post({ url, queryParams, headers, body }) {
-  return axios
-    .post(url, {
+export async function post({ url, queryParams, headers, body }) {
+  try {
+    const response = await axios.post(url, {
       headers: getHeaders(headers),
       data: body,
       params: queryParams
     })
-    .then(responseAdapter)
-    .catch((err) => {
-      defaultHandlerConnectionError(err)
-      throw err
-    })
+
+    return responseAdapter(response)
+  } catch (err) {
+    defaultHandlerConnectionError(err)
+    throw err
+  }
 }
 
-export function put({ url, queryParams, headers, body }) {
-  return axios
-    .put(url, {
+export async function put({ url, queryParams, headers, body }) {
+  try {
+    const response = await axios.put(url, {
       headers: getHeaders(headers),
       body: body,
       params: queryParams
     })
-    .then(responseAdapter)
-    .catch((err) => {
-      defaultHandlerConnectionError(err)
-      throw err
-    })
+
+    return responseAdapter(response)
+  } catch (err) {
+    defaultHandlerConnectionError(err)
+    throw err
+  }
 }
 
-export function del({ url, queryParams, headers }) {
-  return axios
-    .delete(url, {
+export async function del({ url, queryParams, headers }) {
+  try {
+    const response = await axios.delete(url, {
       headers: getHeaders(headers),
       params: queryParams
     })
-    .then(responseAdapter)
-    .catch((err) => {
-      defaultHandlerConnectionError(err)
-      throw err
-    })
+
+    return responseAdapter(response)
+  } catch (err) {
+    defaultHandlerConnectionError(err)
+    throw err
+  }
+}
+
+export async function safeGet(request) {
+  try {
+    const data = await get(request)
+    return [data, null]
+  } catch (err) {
+    return [null, err]
+  }
+}
+
+export async function safePost(request) {
+  try {
+    const data = await post(request)
+    return [data, null]
+  } catch (err) {
+    return [null, err]
+  }
+}
+
+export async function safePut(request) {
+  try {
+    const data = await put(request)
+    return [data, null]
+  } catch (err) {
+    return [null, err]
+  }
+}
+
+export async function safeDel(request) {
+  try {
+    const data = await del(request)
+    return [data, null]
+  } catch (err) {
+    return [null, err]
+  }
 }
 
 function getHeaders(headers) {
@@ -79,5 +119,9 @@ export default {
   get,
   post,
   put,
-  del
+  del,
+  safeGet,
+  safePost,
+  safePut,
+  safeDel
 }
