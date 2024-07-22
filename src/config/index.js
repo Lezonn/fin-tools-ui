@@ -1,4 +1,4 @@
-const FIN_TOOLS_API = 'http://127.0.0.1:8080'
+const FIN_TOOLS_API = 'http://localhost:8080'
 
 const pages = {
   baseTitle: 'Fin Tools',
