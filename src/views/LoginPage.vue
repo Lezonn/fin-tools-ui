@@ -1,27 +1,30 @@
 <script setup>
+import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { googleAuthCodeLogin } from 'vue3-google-login'
 import { api } from '@/config'
-import { safeGet } from '@/utils/http'
+import { get } from '@/utils/http'
 
 const router = useRouter()
 
 const login = async () => {
   const authResponse = await googleAuthCodeLogin()
-  const [callbackResponse, err] = await safeGet({
-    url: api.oauthGoogle.callback,
-    queryParams: {
-      code: authResponse.code
+
+  try {
+    const callbackResponse = await get({
+      url: api.oauthGoogle.callback,
+      queryParams: {
+        code: authResponse.code
+      }
+    })
+    const token = callbackResponse.data.token
+
+    if (callbackResponse) {
+      localStorage.setItem('token', token)
+      router.push({ name: 'home' })
     }
-  })
-
-  if (err) {
+  } catch (err) {
     console.error('Error fetching data: ' + err)
-    return
-  }
-
-  if (callbackResponse.data) {
-    router.push({ name: 'home' })
   }
 }
 </script>

@@ -7,6 +7,11 @@ const pages = {
     name: 'Home',
     title: 'Home'
   },
+  testAuthResource: {
+    path: '/test-auth-resource',
+    name: 'testAuthResource',
+    title: 'Test Auth Resource'
+  },
   notFound: {
     base: {
       path: '/not-found',
@@ -24,6 +29,9 @@ const pages = {
 const api = {
   oauthGoogle: {
     callback: `${FIN_TOOLS_API}/auth/google/callback`
+  },
+  test: {
+    AuthResource: `${FIN_TOOLS_API}/test-auth-resource`
   }
 }
 

@@ -22,8 +22,6 @@ const vuetify = createVuetify({
   directives
 })
 
-axios.defaults.withCredentials = true
-
 app.use(pinia)
 app.use(router)
 app.use(vue3GoogleLogin, googleClientId)
