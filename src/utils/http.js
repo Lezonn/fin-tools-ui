@@ -58,43 +58,15 @@ export async function del({ url, queryParams, headers }) {
   }
 }
 
-export async function safeGet(request) {
-  try {
-    const data = await get(request)
-    return [data, null]
-  } catch (err) {
-    return [null, err]
-  }
-}
-
-export async function safePost(request) {
-  try {
-    const data = await post(request)
-    return [data, null]
-  } catch (err) {
-    return [null, err]
-  }
-}
-
-export async function safePut(request) {
-  try {
-    const data = await put(request)
-    return [data, null]
-  } catch (err) {
-    return [null, err]
-  }
-}
-
-export async function safeDel(request) {
-  try {
-    const data = await del(request)
-    return [data, null]
-  } catch (err) {
-    return [null, err]
-  }
-}
-
 function getHeaders(headers) {
+  const token = localStorage.getItem('token')
+  if (token) {
+    return {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      ...headers
+    }
+  }
   return {
     'Content-Type': 'application/json',
     ...headers
@@ -119,9 +91,5 @@ export default {
   get,
   post,
   put,
-  del,
-  safeGet,
-  safePost,
-  safePut,
-  safeDel
+  del
 }
