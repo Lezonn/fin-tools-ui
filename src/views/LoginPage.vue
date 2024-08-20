@@ -1,30 +1,31 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { googleAuthCodeLogin } from 'vue3-google-login'
-import { api } from '@/config'
-import { get } from '@/utils/http'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
+const authStore = useAuthStore()
 
 const login = async () => {
   const authResponse = await googleAuthCodeLogin()
 
-  try {
-    const callbackResponse = await get({
-      url: api.oauthGoogle.callback,
-      queryParams: {
-        code: authResponse.code
-      }
-    })
-    const token = callbackResponse.data.token
-
-    if (callbackResponse) {
-      localStorage.setItem('token', token)
-      router.push({ name: 'home' })
-    }
-  } catch (err) {
-    console.error('Error fetching data: ' + err)
+  const queryParams = {
+    code: authResponse.code
   }
+
+  authStore.login({
+    queryParams,
+    success: loginSuccess,
+    fail: loginFail
+  })
+}
+
+const loginSuccess = () => {
+  router.push({ name: 'home' })
+}
+
+const loginFail = (err) => {
+  console.error('Failed to login with Google, err: ' + err)
 }
 </script>
 
