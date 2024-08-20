@@ -1,9 +1,17 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
+const router = useRouter()
 const route = useRoute()
+const authStore = useAuthStore()
 
-function isPathActive(path) {
+const logout = () => {
+  authStore.logout()
+  router.push('/')
+}
+
+const isPathActive = (path) => {
   return route.path === path
 }
 </script>
@@ -14,11 +22,20 @@ function isPathActive(path) {
       <ul>
         <li>
           <router-link to="/" :class="{ 'navbar-active': isPathActive('/') }">Home</router-link>
-          <router-link to="/expenses" :class="{ 'navbar-active': isPathActive('/expenses') }"
+          <router-link
+            v-if="authStore.isAuthenticated"
+            to="/expenses"
+            :class="{ 'navbar-active': isPathActive('/expenses') }"
             >Expense</router-link
           >
-          <router-link to="/login" :class="{ 'navbar-active': isPathActive('/login') }"
+          <router-link
+            v-if="!authStore.isAuthenticated"
+            to="/login"
+            :class="{ 'navbar-active': isPathActive('/login') }"
             >Login</router-link
+          >
+          <router-link @click="logout" v-if="authStore.isAuthenticated" to="/logout"
+            >Logout</router-link
           >
         </li>
       </ul>
