@@ -57,6 +57,7 @@ nav {
   height: 56px;
   align-items: center;
   transition: all 0.3s ease-out;
+  background-color: white;
   margin-top: $--spacing-xs;
 
   ul > li > a {

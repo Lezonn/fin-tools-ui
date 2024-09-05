@@ -30,6 +30,12 @@ const api = {
   oauthGoogle: {
     callback: `${FIN_TOOLS_API}/auth/google/callback`
   },
+  expenses: {
+    getAll: `${FIN_TOOLS_API}/api/expenses`
+  },
+  expenseCategories: {
+    getAll: `${FIN_TOOLS_API}/api/expense-categories`
+  },
   test: {
     AuthResource: `${FIN_TOOLS_API}/test-auth-resource`
   }

@@ -59,7 +59,7 @@ export async function del({ url, queryParams, headers }) {
 }
 
 function getHeaders(headers) {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('jwt')
   if (token) {
     return {
       'Content-Type': 'application/json',
