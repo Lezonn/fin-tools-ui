@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useExpenseStore } from '@/stores/expense'
+import { roundEpochToDay } from '@/utils/date'
 
-import ExpenseCard from '@/components/ExpenseCard.vue'
+import ExpenseList from '@/components/ExpenseList.vue'
 import CurrencyInput from '@/components/CurrencyInput.vue'
 
 const expenseStore = useExpenseStore()
@@ -11,6 +12,7 @@ const openAddExpense = ref(false)
 const isFetchCategory = ref(false)
 const expenses = ref([])
 const expenseCategories = ref([])
+let previousExpense = null
 
 const formData = ref({
   category: [],
@@ -65,6 +67,16 @@ function fetchExpenseFailed() {
   console.log('fetch expenses failed')
 }
 
+function isExpenseWithHeader(expense) {
+  let result = true
+
+  if (previousExpense) {
+    result = roundEpochToDay(expense.expense_date) !== roundEpochToDay(previousExpense.expense_date)
+  }
+  previousExpense = expense
+  return result
+}
+
 function triggerSubmit() {
   console.log(formData.value)
 }
@@ -105,12 +117,12 @@ onMounted(() => {
         </v-sheet>
       </div>
       <div class="mt-4">
-        <expense-card
-          class="mt-1"
+        <expense-list
           v-for="expense in expenses"
+          :with-header="isExpenseWithHeader(expense)"
           :key="expense.id"
           :expense="expense"
-        ></expense-card>
+        ></expense-list>
       </div>
     </div>
   </v-container>
